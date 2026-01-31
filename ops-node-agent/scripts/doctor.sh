@@ -72,11 +72,16 @@ else
   fail "配置文件不存在: $CONFIG_FILE"
 fi
 
-# 4) 检查 Python 入口文件
+# 4) 检查 Python 入口与虚拟环境
 if [[ -f "$ENTRY_FILE" ]]; then
   ok "入口文件存在: agent/runtime.py"
 else
   fail "入口文件不存在: $ENTRY_FILE"
+fi
+if [[ -f "$INSTALL_DIR/.venv/bin/python" ]]; then
+  ok "虚拟环境可用: .venv/bin/python"
+else
+  fail "虚拟环境缺失或损坏，请重新运行 install.sh"
 fi
 
 # 5) 检查网络连通性

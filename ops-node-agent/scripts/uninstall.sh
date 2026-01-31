@@ -51,5 +51,7 @@ fi
 echo ""
 echo "=== 卸载完成 ==="
 echo "  - 服务已停止并禁用"
+echo "  - systemd 单元已移除"
 echo "  - 安装目录已删除"
+echo "  提示: 服务日志仍保留在 systemd journal，可手动执行 journalctl --vacuum-time=7d 清理旧日志"
 echo ""

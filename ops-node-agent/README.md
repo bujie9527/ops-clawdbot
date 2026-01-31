@@ -194,6 +194,8 @@ ops-node-agent/
     uninstall.sh      # 卸载
     doctor.sh         # 自检
     smoke_test.sh     # 烟雾测试（register + heartbeat）
+  docs/
+    INSTALL_AUDIT.md  # 安装脚本自查报告
   systemd/
     ops-node-agent.service      # 旧 unit（/opt/ops-node-agent）
     ops-clawdbot-agent.service  # 模板（占位符由 install.sh 注入）
