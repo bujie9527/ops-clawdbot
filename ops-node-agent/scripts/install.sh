@@ -130,7 +130,8 @@ setup_venv() {
     log "错误: 主入口 agent/runtime.py 不存在"
     exit 1
   fi
-  if [[ ! -d .venv ]]; then
+  if [[ ! -f .venv/bin/pip ]]; then
+    [[ -d .venv ]] && rm -rf .venv
     log "创建虚拟环境"
     python3 -m venv .venv
   fi
