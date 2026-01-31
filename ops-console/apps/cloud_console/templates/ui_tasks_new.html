@@ -1,0 +1,23 @@
+{% extends "ui_base.html" %}
+{% block title %}创建任务 - Clawdbot Console{% endblock %}
+{% block content %}
+<h1>创建任务</h1>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<form method="post" action="/ui/tasks/new">
+    <p>
+        <label>node_id: </label>
+        <select name="node_id" required>
+            <option value="">-- 选择节点 --</option>
+            {% for n in nodes %}
+            <option value="{{ n.id }}">{{ n.id }} ({{ n.name }})</option>
+            {% endfor %}
+        </select>
+    </p>
+    <p>
+        <label>task_type: </label>
+        <input type="text" name="task_type" value="PING" readonly>
+    </p>
+    <p><button type="submit">创建</button></p>
+</form>
+<p><a href="/ui/tasks">返回任务列表</a></p>
+{% endblock %}

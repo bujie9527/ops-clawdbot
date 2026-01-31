@@ -1,0 +1,30 @@
+{% extends "ui_base.html" %}
+{% block title %}任务列表 - Clawdbot Console{% endblock %}
+{% block content %}
+<h1>任务列表（最近 50 条）</h1>
+<p><a href="/ui/tasks/new">创建任务</a></p>
+<table>
+    <thead>
+        <tr>
+            <th>task_id</th>
+            <th>node_id</th>
+            <th>type</th>
+            <th>state</th>
+            <th>created_at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tasks %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td><a href="/ui/nodes/{{ t.node_id }}">{{ t.node_id }}</a></td>
+            <td>{{ t.type }}</td>
+            <td>{{ t.state }}</td>
+            <td>{{ t.created_at.isoformat() if t.created_at else '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">暂无任务</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

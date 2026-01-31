@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Clawdbot Console{% endblock %}</title>
+    <link rel="stylesheet" href="/static/app.css">
+    <style>
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+        th { background: #f5f5f5; }
+        .offline { color: #999; }
+        .online { color: #0a0; }
+        .error { color: #c00; margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/ui/nodes">节点</a> | <a href="/ui/tasks">任务</a> | <a href="/ui/tasks/new">创建任务</a>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

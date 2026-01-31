@@ -1,0 +1,31 @@
+{% extends "ui_base.html" %}
+{% block title %}节点 {{ node.id }} - Clawdbot Console{% endblock %}
+{% block content %}
+<h1>节点 {{ node.id }}</h1>
+<p><strong>name:</strong> {{ node.name }} | <strong>project_key:</strong> {{ node.project_key }} | <strong>status:</strong> {{ node.status }} | <strong>last_seen:</strong> {{ node.last_seen.isoformat() if node.last_seen else '-' }}</p>
+
+<h2>最近 20 条任务</h2>
+<table>
+    <thead>
+        <tr>
+            <th>task_id</th>
+            <th>type</th>
+            <th>state</th>
+            <th>updated_at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tasks %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.type }}</td>
+            <td>{{ t.state }}</td>
+            <td>{{ t.updated_at.isoformat() if t.updated_at else '-' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">暂无任务</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p><a href="/ui/nodes">返回节点列表</a></p>
+{% endblock %}

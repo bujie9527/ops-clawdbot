@@ -1,0 +1,16 @@
+[Unit]
+Description=ops-node-agent
+After=network.target
+
+[Service]
+Type=simple
+User=ops-agent
+Group=ops-agent
+WorkingDirectory=/opt/ops-node-agent
+EnvironmentFile=/opt/ops-node-agent/.env
+ExecStart=/opt/ops-node-agent/.venv/bin/python agent/runtime.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

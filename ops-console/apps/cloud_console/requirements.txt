@@ -1,0 +1,18 @@
+# Clawdbot Console - 依赖
+# Python 3.11
+
+# Web
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+jinja2>=3.1.0
+
+# 数据库
+sqlalchemy>=2.0.0
+pymysql>=1.1.0
+cryptography>=41.0.0
+alembic>=1.13.0
+
+# 配置与校验
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0

@@ -1,0 +1,7 @@
+/* MVP 占位：最小样式 */
+body {
+    font-family: system-ui, sans-serif;
+    margin: 1rem;
+}
+nav { margin-bottom: 1rem; }
+main { max-width: 960px; }

@@ -1,0 +1,31 @@
+{% extends "ui_base.html" %}
+{% block title %}节点列表 - Clawdbot Console{% endblock %}
+{% block content %}
+<h1>节点列表</h1>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>project_key</th>
+            <th>status</th>
+            <th>last_seen</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for n in nodes %}
+        <tr>
+            <td>{{ n.id }}</td>
+            <td>{{ n.name }}</td>
+            <td>{{ n.project_key }}</td>
+            <td class="{{ n.status }}">{{ n.status }}</td>
+            <td>{{ n.last_seen or '-' }}</td>
+            <td><a href="/ui/nodes/{{ n.id }}">详情</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">暂无节点</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

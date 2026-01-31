@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8.0.36
+    container_name: ops_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ops_console
+      MYSQL_USER: ops
+      MYSQL_PASSWORD: ops
+    ports:
+      - "3306:3306"
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+    volumes:
+      - ops_mysql_data:/var/lib/mysql
+
+volumes:
+  ops_mysql_data:
