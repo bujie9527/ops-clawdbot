@@ -1,0 +1,16 @@
+[Unit]
+Description=ops-clawdbot-agent
+After=network.target
+
+[Service]
+Type=simple
+User=__SERVICE_USER__
+Group=__SERVICE_USER__
+WorkingDirectory=__INSTALL_DIR__
+EnvironmentFile=__ENV_FILE__
+ExecStart=__EXEC_START__
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

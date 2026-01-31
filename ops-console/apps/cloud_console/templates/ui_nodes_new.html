@@ -1,0 +1,22 @@
+{% extends "ui_base.html" %}
+{% block title %}创建节点 - Clawdbot Console{% endblock %}
+{% block content %}
+<h1>创建节点</h1>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<form method="post" action="/ui/nodes/new">
+    <p>
+        <label>node_id (必填，唯一): </label>
+        <input type="text" name="node_id" value="{{ node_id or '' }}" required placeholder="如 node-1">
+    </p>
+    <p>
+        <label>name: </label>
+        <input type="text" name="name" value="{{ name or '' }}" placeholder="展示名称">
+    </p>
+    <p>
+        <label>project_key: </label>
+        <input type="text" name="project_key" value="{{ project_key or project_key_default }}" placeholder="project_a">
+    </p>
+    <p><button type="submit">创建</button></p>
+</form>
+<p><a href="/ui/nodes">返回节点列表</a></p>
+{% endblock %}

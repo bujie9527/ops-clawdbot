@@ -2,7 +2,70 @@
 {% block title %}节点 {{ node.id }} - Clawdbot Console{% endblock %}
 {% block content %}
 <h1>节点 {{ node.id }}</h1>
-<p><strong>name:</strong> {{ node.name }} | <strong>project_key:</strong> {{ node.project_key }} | <strong>status:</strong> {{ node.status }} | <strong>last_seen:</strong> {{ node.last_seen.isoformat() if node.last_seen else '-' }}</p>
+<p>
+    <strong>name:</strong> {{ node.name }} |
+    <strong>project_key:</strong> {{ node.project_key }} |
+    <strong>status:</strong> {{ node.status }} |
+    <strong>last_seen:</strong> {{ node.last_seen.isoformat() if node.last_seen else '-' }}
+    | <a href="/ui/nodes/{{ node.id }}/edit">编辑</a>
+    | <form method="post" action="/ui/nodes/{{ node.id }}/delete" style="display:inline;" onsubmit="return confirm('确定删除节点 {{ node.id }}？将同时删除其所有任务。');">
+        <button type="submit">删除</button>
+    </form>
+</p>
+
+{% if connection_info %}
+<h2>代理连接信息</h2>
+<div class="connection-info">
+    {% if connection_info.all_ok %}
+    <p class="check-ok">连接信息完整，Agent 可正常接入</p>
+    {% else %}
+    <p class="check-warn">以下项未完成，请检查：</p>
+    <ul>
+        {% if not connection_info.token_ok %}<li>Token 未配置或仍为默认值，请在 .env 中设置 NODE_TOKEN_PROJECT_A</li>{% endif %}
+        {% if not connection_info.url_ok %}<li>Console URL 未配置，请设置 CONSOLE_PUBLIC_URL</li>{% endif %}
+        {% if not connection_info.node_ok %}<li>节点信息不完整（id/name/project_key）</li>{% endif %}
+    </ul>
+    {% endif %}
+    <table>
+        <tr><th>参数</th><th>值</th></tr>
+        <tr><td>CONSOLE_BASE_URL</td><td><code>{{ connection_info.console_base_url }}</code></td></tr>
+        <tr><td>NODE_ID</td><td><code>{{ connection_info.node_id }}</code></td></tr>
+        <tr><td>PROJECT_KEY</td><td><code>{{ connection_info.project_key }}</code></td></tr>
+        <tr><td>NODE_NAME</td><td><code>{{ connection_info.node_name }}</code></td></tr>
+        <tr>
+            <td>NODE_TOKEN</td>
+            <td>
+                <code id="token-display">{{ connection_info.node_token_masked }}</code>
+                <button type="button" onclick="toggleToken(event)">显示</button>
+                <button type="button" onclick="copyToken(event)">复制</button>
+                <span id="token-full" data-token="{{ connection_info.node_token }}" style="display:none;">{{ connection_info.node_token }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+<script>
+function toggleToken(ev) {
+    var display = document.getElementById('token-display');
+    var full = document.getElementById('token-full');
+    var btn = ev.target;
+    if (display.textContent === full.textContent) {
+        display.textContent = '{{ connection_info.node_token_masked }}';
+        btn.textContent = '显示';
+    } else {
+        display.textContent = full.textContent;
+        btn.textContent = '隐藏';
+    }
+}
+function copyToken(ev) {
+    var token = document.getElementById('token-full').getAttribute('data-token');
+    var btn = ev.target;
+    navigator.clipboard.writeText(token).then(function() {
+        btn.textContent = '已复制';
+        setTimeout(function() { btn.textContent = '复制'; }, 1500);
+    });
+}
+</script>
+{% endif %}
 
 <h2>最近 20 条任务</h2>
 <table>

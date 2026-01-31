@@ -12,11 +12,14 @@
         .offline { color: #999; }
         .online { color: #0a0; }
         .error { color: #c00; margin: 0.5rem 0; }
+        .check-ok { color: #0a0; }
+        .check-warn { color: #c60; }
+        .connection-info { margin: 1rem 0; padding: 1rem; background: #f9f9f9; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
     <nav>
-        <a href="/ui/nodes">节点</a> | <a href="/ui/tasks">任务</a> | <a href="/ui/tasks/new">创建任务</a>
+        <a href="/ui/nodes">节点</a> | <a href="/ui/nodes/new">创建节点</a> | <a href="/ui/tasks">任务</a> | <a href="/ui/tasks/new">创建任务</a>
     </nav>
     <main>
         {% block content %}{% endblock %}

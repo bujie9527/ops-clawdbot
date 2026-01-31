@@ -50,5 +50,8 @@ class Settings(BaseSettings):
     PROJECT_KEY_DEFAULT: str = "project_a"
     NODE_TOKEN_PROJECT_A: str = "changeme_node_token_project_a"
 
+    # Console 公网/内网访问地址，用于展示给 Agent 的 CONSOLE_BASE_URL
+    CONSOLE_PUBLIC_URL: str = ""
+
 
 settings = Settings()

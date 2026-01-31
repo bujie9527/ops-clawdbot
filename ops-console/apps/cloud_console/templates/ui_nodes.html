@@ -2,6 +2,7 @@
 {% block title %}节点列表 - Clawdbot Console{% endblock %}
 {% block content %}
 <h1>节点列表</h1>
+<p><a href="/ui/nodes/new">创建节点</a></p>
 <table>
     <thead>
         <tr>
@@ -21,7 +22,13 @@
             <td>{{ n.project_key }}</td>
             <td class="{{ n.status }}">{{ n.status }}</td>
             <td>{{ n.last_seen or '-' }}</td>
-            <td><a href="/ui/nodes/{{ n.id }}">详情</a></td>
+            <td>
+                <a href="/ui/nodes/{{ n.id }}">详情</a> |
+                <a href="/ui/nodes/{{ n.id }}/edit">编辑</a> |
+                <form method="post" action="/ui/nodes/{{ n.id }}/delete" style="display:inline;" onsubmit="return confirm('确定删除节点 {{ n.id }}？将同时删除其所有任务。');">
+                    <button type="submit">删除</button>
+                </form>
+            </td>
         </tr>
         {% else %}
         <tr><td colspan="6">暂无节点</td></tr>
