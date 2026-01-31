@@ -9,7 +9,7 @@ set -euo pipefail
 
 # --- 可配置变量（环境变量覆盖）---
 GIT_REPO="${GIT_REPO:-https://github.com/bujie9527/ops-clawdbot.git}"
-BRANCH="${BRANCH:-main}"
+BRANCH="${BRANCH:-master}"
 INSTALL_DIR="${INSTALL_DIR:-/opt/ops-clawdbot}"
 SERVICE_USER="${SERVICE_USER:-opsnode}"
 SERVICE_NAME="ops-clawdbot-agent"
