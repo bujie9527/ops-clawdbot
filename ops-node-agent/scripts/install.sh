@@ -49,8 +49,14 @@ check_deps() {
   fi
 
   if [[ -n "$need_install" ]] && [[ -f /etc/debian_version ]] && command -v apt-get &>/dev/null; then
-    log "安装依赖: python3-venv python3-pip git"
-    apt-get update -qq && apt-get install -y -qq python3-venv python3-pip git
+    local py_ver
+    py_ver=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "3")
+    local pkgs="python3-venv python3-pip git"
+    if [[ "$py_ver" =~ ^3\.[0-9]+$ ]] && apt-cache show "python${py_ver}-venv" &>/dev/null; then
+      pkgs="python${py_ver}-venv python3-pip git"
+    fi
+    log "安装依赖: $pkgs"
+    apt-get update -qq && apt-get install -y -qq $pkgs
   fi
 
   for cmd in git python3 systemctl; do
@@ -60,7 +66,7 @@ check_deps() {
     fi
   done
   if ! python3 -c "import venv" 2>/dev/null; then
-    log "缺少 python3-venv，请先安装"
+    log "缺少 python3-venv，请先安装: sudo apt install python3-venv python3-pip"
     exit 1
   fi
   log "依赖检查通过"
