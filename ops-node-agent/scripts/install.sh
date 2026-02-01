@@ -5,6 +5,12 @@
 #   非交互：CONSOLE_BASE_URL=... NODE_ID=... NODE_TOKEN=... sudo -E ./scripts/install.sh
 # 环境变量：GIT_REPO BRANCH INSTALL_DIR SERVICE_USER CONSOLE_BASE_URL NODE_ID PROJECT_KEY NODE_TOKEN HEARTBEAT_INTERVAL_SEC
 
+# 必须在最前面：检查 root
+if [ "$EUID" -ne 0 ]; then
+  echo "[ERROR] 请使用 sudo 运行本安装脚本"
+  exit 1
+fi
+
 set -euo pipefail
 
 # --- 可配置变量（环境变量覆盖）---
@@ -27,46 +33,21 @@ mask_token() {
   if [[ ${#val} -ge 8 ]]; then echo "${val:0:4}****${val: -4}"; else echo "****"; fi
 }
 
-# 1) 检查 root
-check_root() {
-  if [[ $EUID -ne 0 ]]; then
-    log "请使用 sudo 运行此脚本"
-    exit 1
-  fi
-}
-
-# 2) 检查依赖，缺则 apt 安装
+# 1) 安装依赖（脚本自行处理，不甩给用户）
 check_deps() {
-  local need_install=""
+  if [[ -f /etc/debian_version ]] && command -v apt-get &>/dev/null; then
+    log "安装系统依赖: python3 python3-venv python3-pip git"
+    apt-get update -qq
+    apt-get install -y python3 python3-venv python3-pip git
+  fi
   for cmd in git python3 systemctl; do
     if ! command -v "$cmd" &>/dev/null; then
-      need_install="1"
-      break
-    fi
-  done
-  if ! python3 -c "import venv" 2>/dev/null; then
-    need_install="1"
-  fi
-
-  if [[ -n "$need_install" ]] && [[ -f /etc/debian_version ]] && command -v apt-get &>/dev/null; then
-    local py_ver
-    py_ver=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" 2>/dev/null || echo "3")
-    local pkgs="python3-venv python3-pip git"
-    if [[ "$py_ver" =~ ^3\.[0-9]+$ ]] && apt-cache show "python${py_ver}-venv" &>/dev/null; then
-      pkgs="python${py_ver}-venv python3-pip git"
-    fi
-    log "安装依赖: $pkgs"
-    apt-get update -qq && apt-get install -y -qq $pkgs
-  fi
-
-  for cmd in git python3 systemctl; do
-    if ! command -v "$cmd" &>/dev/null; then
-      log "缺少命令: $cmd，请先安装"
+      log "缺少命令: $cmd（非 Debian/Ubuntu 请手动安装）"
       exit 1
     fi
   done
   if ! python3 -c "import venv" 2>/dev/null; then
-    log "缺少 python3-venv，请先安装: sudo apt install python3-venv python3-pip"
+    log "缺少 python3-venv，请手动安装: sudo apt install python3-venv python3-pip"
     exit 1
   fi
   log "依赖检查通过"
@@ -250,7 +231,6 @@ print_status() {
 
 # --- main ---
 main() {
-  check_root
   log "开始安装 $SERVICE_NAME (INSTALL_DIR=$INSTALL_DIR)"
   check_deps
   ensure_user
